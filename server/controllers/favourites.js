@@ -39,13 +39,15 @@ export const addFav = async (req,res) => {
 export const getFavProperties = async (req,res) => {
     const user_Id = req.userId;
 
+    console.log(user_Id)
+
     try {
         const getWishlistedProperties = await favourites.find({userId:user_Id});
-        console.log(getWishlistedProperties[0]);
+        console.log(getWishlistedProperties)
         res.json({
             success:true,
             message:"Fetched Fav",
-            getWishlistedProperties
+            fetchProp: getWishlistedProperties
         })
     } catch (error) {
         res.json({
