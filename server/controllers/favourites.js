@@ -41,6 +41,7 @@ export const getFavProperties = async (req,res) => {
 
     try {
         const getWishlistedProperties = await favourites.find({userId:user_Id});
+        console.log(getWishlistedProperties[0]);
         res.json({
             success:true,
             message:"Fetched Fav",
@@ -59,7 +60,7 @@ export const getFavProperties = async (req,res) => {
 export const remFav = async(req,res) =>{
     const id = req.params.id;
     try {
-        const deleteFav = await favourites.deleteOne({propertyId:id});
+        const deleteFav = await favourites.deleteOne({_id:id});
         
         res.json({
             success:true,
