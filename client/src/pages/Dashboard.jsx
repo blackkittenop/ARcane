@@ -22,6 +22,7 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
+import { toast } from "react-hot-toast";
 
 const initialForm = {
   title: "",
@@ -30,9 +31,11 @@ const initialForm = {
   price: "",
   location: "",
   size: "",
+  image1: "",
+  image2: "",
+  image3: "",
+  image4: "",
 };
-import Filter from "../components/Filter";
-import { ImMoveDown, ImQrcode } from "react-icons/im";
 import PropertyForm from "../components/PropertyForm.jsx";
 import QrCode from "../components/QrCode.jsx";
 import StatsTable from "../components/Stats.jsx";
@@ -59,8 +62,10 @@ const Dashboard = () => {
       const result = res.data;
       console.log(result);
       setIsLoading(false);
+      toast.success("Property added successfully");
     } catch (error) {
       setIsLoading(false);
+      toast.error("Error adding property");
     }
   };
 
@@ -219,7 +224,13 @@ const Dashboard = () => {
                         color="danger"
                         radius="full"
                         size="sm"
-                        onClick={() => deleteProperty(item._id)}
+                        onClick={() =>
+                          toast.promise(deleteProperty(item._id), {
+                            loading: "Deleting...",
+                            success: "Deleted successfully",
+                            error: "Error deleting property",
+                          })
+                        }
                       >
                         Delete Property
                       </Button>
