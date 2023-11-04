@@ -11,16 +11,6 @@ import { ethers } from "ethers";
 import { HeartIcon } from "../components/HeartIcon";
 import { Layout } from "../components/Layout";
 import axios from "../axios";
-import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-// import BottomHome from "../components/BottomHome";
-import {
-  ChevronDownIcon,
-  FunnelIcon,
-  MinusIcon,
-  PlusIcon,
-  Squares2X2Icon,
-} from "@heroicons/react/20/solid";
 import { Chip } from "@nextui-org/react";
 import { Link, useNavigate } from "react-router-dom";
 import Filter from "../components/Filter";
@@ -217,10 +207,10 @@ const Home = () => {
 
                         <Link to="/details" state={{ item }}>
                           {/* <Button
-              radius="full"
-              className="bg-gradient-to-tr from-[#1E152D] to-[#7D5CB2] text-white shadow-lg w-full"
-            > */}
-                          View Details
+                            radius="full"
+                            className="bg-gradient-to-tr mt-3 from-[#1E152D] to-[#7D5CB2] text-white shadow-lg w-full"
+                          > */}
+                            View Details
                           {/* </Button> */}
                         </Link>
                       </div>
@@ -297,10 +287,10 @@ const Home = () => {
 
                         <Link to="/details" state={{ item }}>
                           {/* <Button
-              radius="full"
-              className="bg-gradient-to-tr from-[#1E152D] to-[#7D5CB2] text-white shadow-lg w-full"
-            > */}
-                          View Details
+                            radius="full"
+                            className="bg-gradient-to-tr mt-3 from-[#1E152D] to-[#7D5CB2] text-white shadow-lg w-full"
+                          > */}
+                            View Details
                           {/* </Button> */}
                         </Link>
                       </div>
@@ -378,10 +368,10 @@ const Home = () => {
 
                       <Link to="/details" state={{ item }}>
                         {/* <Button
-              radius="full"
-              className="bg-gradient-to-tr from-[#1E152D] to-[#7D5CB2] text-white shadow-lg w-full"
-            > */}
-                        View Details
+                          radius="full"
+                          className="bg-gradient-to-tr mt-3 from-[#1E152D] to-[#7D5CB2] text-white shadow-lg w-full"
+                        > */}
+                          View Details
                         {/* </Button> */}
                       </Link>
                     </div>

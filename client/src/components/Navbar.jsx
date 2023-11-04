@@ -1,15 +1,12 @@
 import React from "react";
 import { useTheme } from "next-themes";
 
-
-
 import {
   Navbar,
   Switch,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-
   Input,
   Button,
   DropdownItem,
@@ -29,11 +26,19 @@ import axios from "../axios";
 import { User } from "@nextui-org/react";
 import Logo from "../assets/logo(Short).png";
 import { Link } from "react-router-dom";
-
+import {
+  ConnectWallet,
+  Web3Button,
+  useAddress,
+  useContract,
+  useContractRead,
+} from "@thirdweb-dev/react";
+<link
+  href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css"
+  rel="stylesheet"
+/>;
 
 export default function NavBar() {
-  const MapboxAPIKey =
-    "pk.eyJ1IjoiZGV2LXZpc2hhbCIsImEiOiJjbG52ejNqZWEwM2xyMmpvNjhneDNybjB5In0.vxw4utUDHbwyqJHgMr0Q4g";
   const { theme, setTheme } = useTheme();
   const navigateTo = useNavigate();
   const { user, setUser } = useGlobalContext();
@@ -70,9 +75,11 @@ export default function NavBar() {
   };
   function success(pos) {
     var crd = pos.coords;
-    // console.log("Your current position is:");
-    // console.log(`Latitude : ${crd.latitude}`);
-    // console.log(`Longitude: ${crd.longitude}`);
+    console.log("Your current position is:");
+    console.log(`Latitude : ${crd.latitude}`);
+    latitude = crd.latitude;
+    longitude = crd.longitude;
+    console.log("Longitude:" + longitude);
   }
 
   function errors(err) {
@@ -101,43 +108,42 @@ export default function NavBar() {
       console.log("Geolocation is not supported by this browser.");
     }
 
-    // axios
-    //   .get(
-    //     `https://api.mapbox.com/geocoding/v5/mapbox.places/-73.989,40.733.json?access_token=pk.eyJ1Ijoic2lkZDAyMDMiLCJhIjoiY2xudnoxejQ2MDRtZjJqbnc3ejY3dWZ6bSJ9.sMTwpGbl-wpTEJRCAe6Qeg`,
-    //   )
-    //   .then((response) => {
-    //     console.log("vishal bhauuuuu");
-    //     const data = response.data;
-    //     let cityFound = false;
-    //     // console.log(data);
+    axios
+      .get()
+      .then((response) => {
+        const data = response.data;
+        let cityFound = false;
+        console.log(data);
 
-    //     for (const feature of data.features) {
-    //       console.log("vishal bhauuuuu");
-    //       if (feature.place_type.includes("city") && feature.text) {
-    //         setCityName(feature.text);
-    //         cityFound = true;
-    //         console.log(cityName);
-    //         break;
-    //       }
-    //     }
-
-    //     if (!cityFound) {
-    //       setCityName("City not found");
-    //     } else {
-    //       console.log("cityName");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching data from Mapbox API:", error);
-    //   });
+        for (const feature of data.features) {
+          if (feature.text) {
+            setCityName(feature.text);
+            cityFound = true;
+            console.log("hello" + cityName);
+            break;
+          }
+        }
+        if (!cityFound) {
+          setCityName("City not found");
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data from Mapbox API:", error);
+      });
   }, []);
   return (
-    <Navbar isBordered className=" ">
+    <Navbar
+      maxWidth="2xl"
+      height="80px"
+      isBordered
+      className=" sticky top-[0vh] "
+    >
       <NavbarBrand className="mr-4 space-x-3">
         <img src={Logo} className=" w-9" />
         <p className="hidden font-bold sm:block text-inherit ">ARcane</p>
       </NavbarBrand>
-      <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+      <NavbarContent className="hidden gap-4 sm:flex" justify="end">
         <NavbarItem>
           <Link color="foreground" to="/">
             Buy
@@ -182,6 +188,9 @@ export default function NavBar() {
             }}
           />
         </NavbarItem>
+        <NavbarItem>
+          <ConnectWallet />
+        </NavbarItem>
         <Dropdown placement="bottom-end">
           <DropdownTrigger>
             <NavbarItem>
@@ -201,13 +210,18 @@ export default function NavBar() {
               <p className="font-semibold">Signed in as</p>
               <p className="font-semibold">{user.result.email}</p>
             </DropdownItem>
-            <DropdownItem key="settings"><Link to="/dashboard/seller">My Dashboard</Link></DropdownItem>
-            <DropdownItem key="configurations"> <Link to="/user/favourites">Favourites</Link></DropdownItem>
+            <DropdownItem key="settings">
+              <Link to="/dashboard/seller">My Dashboard</Link>
+            </DropdownItem>
+            <DropdownItem key="configurations">
+              {" "}
+              <Link to="/user/favourites">Favourites</Link>
+            </DropdownItem>
             <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
             <DropdownItem key="logout" color="danger">
               <Button
                 onClick={logout}
-                className="flex "
+                className=" w-full"
                 color="danger"
                 variant="bordered"
                 startContent={<RiLogoutCircleLine />}
@@ -218,12 +232,12 @@ export default function NavBar() {
             <DropdownItem>
               <Button
                 onClick={deleteUser}
-                className="flex mt-3"
+                className="w-full"
                 color="danger"
                 variant="shadow"
                 startContent={<MdDeleteOutline />}
               >
-               Delete Account
+                Delete Account
               </Button>
             </DropdownItem>
           </DropdownMenu>
@@ -231,10 +245,11 @@ export default function NavBar() {
         <Input
           type="location"
           placeholder="Get Your Location"
+          className=" w-52"
           labelPlacement="outside"
           variant="bordered"
           color="success"
-          className="w-fit"
+          // value={cityName}
           startContent={
             <img
               className="w-4"
@@ -242,7 +257,6 @@ export default function NavBar() {
             />
           }
         />
-              
       </NavbarContent>
     </Navbar>
   );
